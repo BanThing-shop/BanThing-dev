@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.5.5'
+	id 'org.springframework.boot' version '3.5.6'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -10,7 +10,7 @@ description = 'backend'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -36,8 +36,8 @@ dependencies {
 	// Dotenv (.env 자동 로딩)
 	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 
-	// WebSocket
-//	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // Actuator for monitoring and management endpoints
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	// JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'

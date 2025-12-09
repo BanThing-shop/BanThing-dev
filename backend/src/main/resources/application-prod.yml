@@ -1,15 +1,10 @@
 server:
   port: ${SERVER_PORT}
 
-# database setting
 spring:
   sql:
     init:
-      mode: always
-      data-locations: classpath:data.sql
-      continue-on-error: false  # false로 변경해서 오류 확인
-      separator: ";"
-      encoding: UTF-8
+      mode: never  # 프로덕션에서는 data.sql 실행 안함
 
   task:
     scheduling:
@@ -19,30 +14,30 @@ spring:
 
   servlet:
     multipart:
-      enabled: true # 멀티파트 업로드 활성화
-      max-file-size: 10MB # 파일당 최대 크기
-      max-request-size: 10MB # 요청당 최대 크기
-
-
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
 
   datasource:
-    url: jdbc:mariadb://localhost:3306/banthingdb
-    username: root
-    password: mariadb
+    url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
 
   jpa:
-    defer-datasource-initialization: true
-
-    # DBMS dialect setting
+    defer-datasource-initialization: false
     database-platform: org.hibernate.dialect.MariaDB106Dialect
     hibernate:
-      # ddl
-      ddl-auto: none
+      ddl-auto: validate  # 프로덕션에서는 validate만
     properties:
       hibernate:
-        format_sql: true # SQL log
+        format_sql: false  # 프로덕션에서는 포맷 끔
     database: mysql
+    show-sql: false  # 프로덕션에서는 SQL 로그 끔
 
   security:
     oauth2:
@@ -54,7 +49,7 @@ spring:
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             scope: [ profile_nickname, profile_image ]
-            redirect-uri: 'http://localhost:9000/login/oauth2/code/kakao'
+            redirect-uri: ${KAKAO_REDIRECT_URI}
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
@@ -62,35 +57,37 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-# log level setting
 logging:
   level:
-    root: info
-    com.nathing.banthing: debug
-    org.hibernate.SQL: debug
-    org.springframework.jdbc.datasource.init: debug  # SQL 초기화 로그 추가
+    root: warn
+    com.nathing.banthing: info
+    org.hibernate.SQL: warn
+  file:
+    name: /var/log/banthing/application.log
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
 
-# 공통 설정
 jwt:
   secret: ${JWT_SECRET}
   access-expiration: ${JWT_ACCESS_TOKEN_EXPIRATION}
   refresh-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION}
 
 cookie:
-  domain: localhost
-  secure: false
+  domain: ${COOKIE_DOMAIN}
+  secure: true  # HTTPS 필수
   http-only: true
-  same-site: Lax
+  same-site: None  # CORS 대응
   access-token-name: ACCESS_TOKEN
   refresh-token-name: REFRESH_TOKEN
   access-max-age: ${COOKIE_ACCESS_TOKEN_MAX_AGE}
   refresh-max-age: ${COOKIE_REFRESH_TOKEN_MAX_AGE}
 
 app:
-  oauth2-success-redirect-url: http://localhost:5173/popup-close
-  oauth2-failure-redirect-url: http://localhost:5173/popup-close?from=oauth2
+  oauth2-success-redirect-url: ${OAUTH2_SUCCESS_REDIRECT_URL}
+  oauth2-failure-redirect-url: ${OAUTH2_FAILURE_REDIRECT_URL}
 
-# ===== Google AI (Gemini) 설정 추가 =====
 google:
   ai:
     api-key: ${GOOGLE_AI_API_KEY}
@@ -98,8 +95,6 @@ google:
     temperature: ${GOOGLE_AI_TEMPERATURE:0.7}
     max-tokens: ${GOOGLE_AI_MAX_TOKENS:1000}
 
-
-
 file:
-  upload-dir:  ${FILE_UPLOAD_PATH}
+  upload-dir: ${FILE_UPLOAD_PATH}
   upload-url: /media/
