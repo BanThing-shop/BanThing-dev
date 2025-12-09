@@ -75,7 +75,7 @@ jwt:
   refresh-expiration: ${JWT_REFRESH_TOKEN_EXPIRATION}
 
 cookie:
-  domain: ${COOKIE_DOMAIN}
+  domain: .banthing.shop
   secure: true  # HTTPS 필수
   http-only: true
   same-site: None  # CORS 대응
@@ -85,8 +85,8 @@ cookie:
   refresh-max-age: ${COOKIE_REFRESH_TOKEN_MAX_AGE}
 
 app:
-  oauth2-success-redirect-url: ${OAUTH2_SUCCESS_REDIRECT_URL}
-  oauth2-failure-redirect-url: ${OAUTH2_FAILURE_REDIRECT_URL}
+  oauth2-success-redirect-url: https://banthing.shop/popup-close
+  oauth2-failure-redirect-url: https://banthing.shop?from=oauth2
 
 google:
   ai:
