@@ -26,9 +26,9 @@ spring:
 
 
   datasource:
-    url: jdbc:mariadb://localhost:3306/banthingdb
-    username: root
-    password: mariadb
+    url: jdbc:mariadb://${DB_HOST_LOCAL}:${DB_PORT_LOCAL}/${DB_NAME_LOCAL}
+    username: ${DB_USERNAME_LOCAL}
+    password: ${DB_PASSWORD_LOCAL}
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
