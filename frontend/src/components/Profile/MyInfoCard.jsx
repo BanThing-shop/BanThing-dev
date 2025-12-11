@@ -20,8 +20,14 @@ import TrustBadge from  '../Meeting/TrustBadge.jsx'; // TrustBadge 컴포넌트 
  */
 const MyInfoCard = ({ user }) => {
   
+  const getSecureImageUrl = (url) => {
+    if (!url || url === '/images/defaultProfile.png') return url;
+    // http:// 를 https:// 로 강제 치환하여 Mixed Content 방지
+    return url.replace('http://', 'https://');
+  };
+
   const nickname = user?.nickname || '사용자';
-  const profileImageUrl = user?.profileImageUrl || '/images/defaultProfile.png';
+  const profileImageUrl = getSecureImageUrl(user?.profileImageUrl) || '/images/defaultProfile.png';
   // const selfIntroduction = user?.selfIntroduction || '없음';
   // const trustGrade = user?.trustGrade;
   const trustScore = user?.trustScore;
