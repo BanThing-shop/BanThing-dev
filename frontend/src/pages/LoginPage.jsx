@@ -12,7 +12,12 @@ const LoginPage = () => {
   // useRef로 인터벌 ID를 저장합니다.
   const intervalRef = useRef(null);
   // 카카오 로그인 백엔드 엔드포인트
-  const KAKAO_AUTH_URL = `${import.meta.env.VITE_API_URL.replace('/api', '')}/oauth2/authorization/kakao`;
+  const getBaseUrl = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+    // /api를 제거하여 베이스 URL 생성
+    return apiUrl.endsWith('/api') ? apiUrl.slice(0, -4) : apiUrl;
+  };
+  const KAKAO_AUTH_URL = `${getBaseUrl()}/oauth2/authorization/kakao`;
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 

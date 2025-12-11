@@ -86,7 +86,7 @@ cookie:
 
 app:
   oauth2-success-redirect-url: https://banthing.shop/popup-close
-  oauth2-failure-redirect-url: https://banthing.shop?from=oauth2
+  oauth2-failure-redirect-url: https://banthing.shop/popup-close?from=oauth2
 
 google:
   ai:
