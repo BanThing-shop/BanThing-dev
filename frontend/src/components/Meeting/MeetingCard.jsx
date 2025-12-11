@@ -57,7 +57,8 @@ const MeetingCard = ({ meeting }) => {
         if (thumbnailUrl.startsWith('https://')) {
             return thumbnailUrl;
         }
-        const backendUrl = import.meta.env.VITE_API_URL.replace('/api', '');
+        const apiUrl = import.meta.env.VITE_API_URL;
+        const backendUrl = apiUrl.endsWith('/api') ? apiUrl.slice(0, -4) : apiUrl;
         return `${backendUrl}${thumbnailUrl}`;
     };
 
