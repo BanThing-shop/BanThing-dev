@@ -12,7 +12,7 @@ const LoginPage = () => {
   // useRef로 인터벌 ID를 저장합니다.
   const intervalRef = useRef(null);
   // 카카오 로그인 백엔드 엔드포인트
-  const KAKAO_AUTH_URL = 'http://localhost:9000/oauth2/authorization/kakao';
+  const KAKAO_AUTH_URL = `${import.meta.env.VITE_API_URL.replace('/api', '')}/oauth2/authorization/kakao`;
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 

@@ -180,7 +180,8 @@ const Chatbot = () => {
 
     // 회원가입 버튼 클릭 핸들러
     const handleSignupClick = useCallback(() => {
-        window.location.href = 'http://localhost:9000/oauth2/authorization/kakao';
+        const apiUrl = import.meta.env.VITE_API_URL.replace('/api', '');
+        window.location.href = `${apiUrl}/oauth2/authorization/kakao`;
     }, []);
 
     // 회원가입 관련 키워드 감지
